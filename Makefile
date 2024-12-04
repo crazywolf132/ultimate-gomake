@@ -81,15 +81,15 @@ ENABLE_PARALLEL := $(if $(filter local,$(BUILD_SYSTEM)),true,false)
 # Version Control
 VERSION_STRATEGY ?= git # git, semver, date
 VERSION := $(shell \
-    if [ "$(VERSION_STRATEGY)" = "git" ]; then \
-        git describe --tags --always --dirty; \
+    if [ "$(VERSION_STRATEGY)" = "git" ] && git rev-parse --git-dir > /dev/null 2>&1; then \
+        git describe --tags --always --dirty 2>/dev/null || echo "dev"; \
     elif [ "$(VERSION_STRATEGY)" = "semver" ]; then \
         cat VERSION 2>/dev/null || echo "0.1.0"; \
     else \
         date -u '+%Y%m%d-%H%M%S'; \
     fi)
-GIT_COMMIT ?= $(shell git rev-parse --short HEAD)
-GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+GIT_COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME ?= $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 BUILD_BY ?= $(shell whoami)
 
