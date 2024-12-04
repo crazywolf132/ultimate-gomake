@@ -215,7 +215,13 @@ init: ## Initialize project with sensible defaults
 	@if [ ! -f ".gitignore" ]; then \
 		curl -sL https://www.gitignore.io/api/go > .gitignore; \
 	fi
-	@mkdir -p cmd pkg internal api docs scripts build configs
+	@mkdir -p \
+		main \
+		testdata \
+		.github/workflows
+	@if [ ! -f "main/main.go" ]; then \
+		echo 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}' > main/main.go; \
+	fi
 	$(MAKE) deps
 	$(SUCCESS) Project initialized!
 
@@ -240,13 +246,13 @@ build-target: generate
 			-gcflags '$(GCFLAGS)' \
 			-asmflags '$(ASMFLAGS)' \
 			-o $(BIN_DIR)/$(notdir $(TARGET)) \
-			./$(if $(filter monorepo,$(PROJECT_TYPE)),$(TARGET)/cmd,cmd)/$(notdir $(TARGET)); \
+			./main; \
 	fi
 
 .PHONY: install
 install: build ## Install the application
 	$(WORKING) Installing $(PROJECT_NAME)...
-	$(GO) install -tags '$(ALL_TAGS)' -ldflags '$(LD_FLAGS)' ./cmd/$(PROJECT_NAME)
+	$(GO) install -tags '$(ALL_TAGS)' -ldflags '$(LD_FLAGS)' ./main
 	$(SUCCESS) Installation complete!
 
 # =============================================================================
