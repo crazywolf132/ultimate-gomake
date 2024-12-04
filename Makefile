@@ -35,7 +35,14 @@
 # Load .env file if it exists
 ifneq (,$(wildcard .env))
     include .env
-    export
+    # Only export specific variables that need to be in the environment
+    export GOOS
+    export GOARCH
+    export CGO_ENABLED
+    export PROJECT_NAME
+    export ORGANIZATION
+    export DATABASE_URL
+    # Add other variables that actually need to be in the environment
 endif
 
 # Load project-specific config if it exists
