@@ -263,7 +263,7 @@ dev: deps generate ## Start development environment
 	$(INFO) Starting development environment...
 	@if [ ! -f ".air.toml" ]; then \
 		cp $(CONFIG_DIR)/air.toml.example .air.toml 2>/dev/null || \
-		curl -sL https://raw.githubusercontent.com/cosmtrek/air/master/air.conf.example > .air.toml; \
+		curl -sL https://raw.githubusercontent.com/air-verse/air/refs/heads/master/air_example.toml > .air.toml; \
 	fi
 	$(ROCKET) Running with hot reload...
 	$(AIR) -c .air.toml
