@@ -75,7 +75,16 @@ BUILD_TARGETS ?= $(if $(filter monorepo,$(PROJECT_TYPE)),$(MONOREPO_SERVICES),$(
 # Build Settings
 BUILD_SYSTEM ?= local # local, ci
 CI_SYSTEM ?= github # github, gitlab, jenkins
-PARALLEL_JOBS ?= $(shell nproc)
+PARALLEL_JOBS ?= $(shell \
+    if command -v nproc >/dev/null 2>&1; then \
+        nproc; \
+    elif command -v getconf >/dev/null 2>&1; then \
+        getconf _NPROCESSORS_ONLN; \
+    elif command -v sysctl >/dev/null 2>&1; then \
+        sysctl -n hw.ncpu; \
+    else \
+        echo 1; \
+    fi)
 ENABLE_PARALLEL := $(if $(filter local,$(BUILD_SYSTEM)),true,false)
 
 # Version Control
