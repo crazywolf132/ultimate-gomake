@@ -534,7 +534,7 @@ deps: ## Install dependencies
 		$(GO) install github.com/golang/mock/mockgen@latest; \
 	fi
 	@if [ ! -f "$(AIR)" ]; then \
-		$(GO) install github.com/cosmtrek/air@latest; \
+		$(GO) install github.com/air-verse/air@latest; \
 	fi
 	$(SUCCESS) Dependencies installed!
 
@@ -581,7 +581,7 @@ tools: ## Install all tools
 	$(GO) install mvdan.cc/gofumpt@latest
 	$(GO) install golang.org/x/vuln/cmd/govulncheck@latest
 	$(GO) install github.com/golang/mock/mockgen@latest
-	$(GO) install github.com/cosmtrek/air@latest
+	$(GO) install github.com/air-verse/air@latest
 	$(GO) install github.com/swaggo/swag/cmd/swag@latest
 	$(SUCCESS) Tools installed!
 
